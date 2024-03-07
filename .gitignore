@@ -1,0 +1,11 @@
+
+!/.installed.cfg
+!/eggs/
+!/bin/
+!/parts/
+!/develop-eggs/
+!/src/pyams_auth_remote/**/__pycache__/
+!/src/pyams_auth_remote.egg-info/
+/.coverage
+/coverage.xml
+/.scannerwork/

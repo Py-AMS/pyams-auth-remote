@@ -1,0 +1,3 @@
+[run]
+source = src/pyams_auth_remote
+omit = src/pyams_auth_remote/tests/*
