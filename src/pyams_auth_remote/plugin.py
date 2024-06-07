@@ -61,7 +61,8 @@ class RemoveUserCredentialsPlugin:
                 principals = sm.find_principals(principal_id, exact_match=True)
                 if len(principals) == 1:
                     principal = principals[0]
-                    return Credentials(self.prefix, principal.id)
+                    return Credentials(self.prefix, principal.id,
+                                       pre_authenticated=True)
                 if len(principals) > 1:
                     LOGGER.warning(f"Ambiguous principal ID {principal_id}: multiple match!")
         return None

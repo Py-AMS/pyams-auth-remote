@@ -102,6 +102,8 @@ available into one of our security manager directory plugins!
     'remote'
     >>> creds.id
     'system:admin'
+    >>> creds.attributes
+    {'pre_authenticated': True}
 
 Providing a request without authorization, or a bad encoded authorization header, should return
 None:
