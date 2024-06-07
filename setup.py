@@ -60,7 +60,7 @@ setup(name='pyams_auth_remote',
       install_requires=[
           'setuptools',
           # -*- Extra requirements: -*-
-          'pyams_security',
+          'pyams_security >= 2.3.4',
           'pyams_utils',
           'pyramid >= 2.0.0'
       ],
