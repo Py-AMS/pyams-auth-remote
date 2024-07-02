@@ -1,6 +1,10 @@
 Changelog
 =========
 
+2.0.4
+-----
+ - corrected typo in plugin class name
+
 2.0.3
 -----
  - tag mismatch
