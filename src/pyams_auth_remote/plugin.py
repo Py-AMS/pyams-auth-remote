@@ -35,7 +35,7 @@ PARSED_CREDENTIALS_ENVKEY = 'pyams_auth_remote.user_id'
 
 
 @utility_config(name='remote-user', provides=ICredentialsPlugin)
-class RemoveUserCredentialsPlugin:
+class RemoteUserCredentialsPlugin:
     """Remote user credentials plug-in
 
     This credentials plug-in is used to extract REMOTE_USER variable
