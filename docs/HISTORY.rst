@@ -1,6 +1,10 @@
 Changelog
 =========
 
+2.1.1
+-----
+ - added support for Python 3.12
+
 2.1.0
 -----
  - added settings option *pyams_auth_remote.mode* to use an HTTP header instead of an environment variable
