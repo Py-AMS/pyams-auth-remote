@@ -28,8 +28,17 @@ from pyams_auth_remote import _
 
 LOGGER = logging.getLogger('PyAMS (remote auth)')
 
-CREDENTIALS_VARNAME_KEY = 'pyams_auth_remote.environment_var_name'
-CREDENTIALS_VARNAME_DEFAULT = 'REMOTE_USER'
+CREDENTIALS_ENVIRONMENT_MODE = 'environment'
+CREDENTIALS_HEADER_MODE = 'header'
+
+CREDENTIALS_MODE_KEY = 'pyams_auth_remote.mode'
+CREDENTIALS_MODE_DEFAULT = 'environment'
+
+CREDENTIALS_ENVIRON_KEY = 'pyams_auth_remote.environment_var_name'
+CREDENTIALS_ENVIRON_DEFAULT = 'REMOTE_USER'
+
+CREDENTIALS_HEADER_KEY = 'pyams_auth_remote.header_var_name'
+CREDENTIALS_HEADER_DEFAULT = 'X-SSL-Client-CN'
 
 PARSED_CREDENTIALS_ENVKEY = 'pyams_auth_remote.user_id'
 
@@ -53,8 +62,15 @@ class RemoteUserCredentialsPlugin:
         Note that extracted principal ID must match a local principal login.
         """
         settings = request.registry.settings
-        var_name = settings.get(CREDENTIALS_VARNAME_KEY, CREDENTIALS_VARNAME_DEFAULT)
-        principal_id = request.environ.get(var_name)
+        mode = settings.get(CREDENTIALS_MODE_KEY, CREDENTIALS_MODE_DEFAULT)
+        if mode == CREDENTIALS_ENVIRONMENT_MODE:
+            var_name = settings.get(CREDENTIALS_ENVIRON_KEY, CREDENTIALS_ENVIRON_DEFAULT)
+            principal_id = request.environ.get(var_name)
+        elif mode == CREDENTIALS_HEADER_MODE:
+            var_name = settings.get(CREDENTIALS_HEADER_KEY, CREDENTIALS_HEADER_DEFAULT)
+            principal_id = request.headers.get(var_name)
+        else:
+            principal_id = None
         if principal_id is not None:
             sm = query_utility(ISecurityManager)
             if sm is not None:

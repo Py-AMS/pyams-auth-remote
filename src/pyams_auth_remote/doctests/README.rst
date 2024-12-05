@@ -118,6 +118,21 @@ None:
     >>> creds is None
     True
 
+You can also store the certificate CN into a request header, for example using Apache *mod_header* extension:
+
+    >>> from pyams_auth_remote.plugin import CREDENTIALS_MODE_KEY, CREDENTIALS_HEADER_MODE, CREDENTIALS_HEADER_DEFAULT
+
+    >>> config.registry.settings[CREDENTIALS_MODE_KEY] = CREDENTIALS_HEADER_MODE
+    >>> request = DummyRequest(headers={CREDENTIALS_HEADER_DEFAULT: 'admin'}, registry=config.registry)
+
+    >>> creds = plugin.extract_credentials(request, authenticate=False)
+    >>> creds is None
+    False
+    >>> creds.id
+    'system:admin'
+    >>> creds.attributes
+    {'pre_authenticated': True}
+
 
 Tests cleanup:
 
