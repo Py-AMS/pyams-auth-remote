@@ -1,6 +1,10 @@
 Changelog
 =========
 
+2.1.2
+-----
+ - added debug option to set remote user from OS environment variable instead of request environment variable
+
 2.1.1
 -----
  - added support for Python 3.12
