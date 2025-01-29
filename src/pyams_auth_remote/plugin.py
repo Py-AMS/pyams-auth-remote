@@ -16,6 +16,9 @@ This module provides the remote user authentication plugin.
 """
 
 import logging
+import os
+
+from pyramid.settings import asbool
 
 from pyams_security.credential import Credentials
 from pyams_security.interfaces import ISecurityManager
@@ -27,6 +30,8 @@ from pyams_auth_remote import _
 
 
 LOGGER = logging.getLogger('PyAMS (remote auth)')
+
+PLUGIN_DEBUG_MODE_KEY = 'pyams_auth_remote.debug'
 
 CREDENTIALS_ENVIRONMENT_MODE = 'environment'
 CREDENTIALS_HEADER_MODE = 'header'
@@ -62,15 +67,18 @@ class RemoteUserCredentialsPlugin:
         Note that extracted principal ID must match a local principal login.
         """
         settings = request.registry.settings
+        principal_id = None
         mode = settings.get(CREDENTIALS_MODE_KEY, CREDENTIALS_MODE_DEFAULT)
         if mode == CREDENTIALS_ENVIRONMENT_MODE:
             var_name = settings.get(CREDENTIALS_ENVIRON_KEY, CREDENTIALS_ENVIRON_DEFAULT)
             principal_id = request.environ.get(var_name)
+            if not principal_id:
+                debug = asbool(settings.get(PLUGIN_DEBUG_MODE_KEY, False))
+                if debug:
+                    principal_id = os.environ.get(var_name)
         elif mode == CREDENTIALS_HEADER_MODE:
             var_name = settings.get(CREDENTIALS_HEADER_KEY, CREDENTIALS_HEADER_DEFAULT)
             principal_id = request.headers.get(var_name)
-        else:
-            principal_id = None
         if principal_id is not None:
             sm = query_utility(ISecurityManager)
             if sm is not None:

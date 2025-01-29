@@ -1,4 +1,4 @@
-===================================
+from pyams_auth_remote.plugin import CREDENTIALS_ENVIRON_DEFAULT===================================
 PyAMS remote authentication package
 ===================================
 
@@ -125,6 +125,28 @@ You can also store the certificate CN into a request header, for example using A
     >>> config.registry.settings[CREDENTIALS_MODE_KEY] = CREDENTIALS_HEADER_MODE
     >>> request = DummyRequest(headers={CREDENTIALS_HEADER_DEFAULT: 'admin'}, registry=config.registry)
 
+    >>> creds = plugin.extract_credentials(request, authenticate=False)
+    >>> creds is None
+    False
+    >>> creds.id
+    'system:admin'
+    >>> creds.attributes
+    {'pre_authenticated': True}
+
+
+Plugin debug mode
+-----------------
+
+If you need to use an environment variable to provide your principal ID, you can use the debug mode:
+
+    >>> from pyams_auth_remote.plugin import PLUGIN_DEBUG_MODE_KEY, CREDENTIALS_ENVIRON_DEFAULT, CREDENTIALS_ENVIRONMENT_MODE
+    >>> config.registry.settings[CREDENTIALS_MODE_KEY] = CREDENTIALS_ENVIRONMENT_MODE
+    >>> config.registry.settings[PLUGIN_DEBUG_MODE_KEY] = True
+
+    >>> import os
+    >>> os.environ[CREDENTIALS_ENVIRON_DEFAULT] = 'admin'
+
+    >>> request = DummyRequest(registry=config.registry)
     >>> creds = plugin.extract_credentials(request, authenticate=False)
     >>> creds is None
     False
